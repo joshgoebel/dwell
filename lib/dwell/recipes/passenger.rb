@@ -2,11 +2,6 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :dwell do
     namespace :passenger do
   
-      # desc "Enable GPM"
-      # task :enable_gpm do
-      #   sudo "apt-get install gpm"
-      # end
-  
       desc "Enable Passenger"
       task :enable_passenger do
         input = "\n"
@@ -35,11 +30,6 @@ DocumentRoot #{deploy_to}/public
         sudo "mv /tmp/vhost /etc/apache2/sites-available/#{application}"
         sudo "a2dissite default"
         sudo "a2ensite #{application}"
-      end
-  
-      desc "Reload Apache"
-      task :apache_reload do
-        sudo "/etc/init.d/apache2 reload"
       end
   
       desc "Install Passenger"
