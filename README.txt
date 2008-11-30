@@ -20,9 +20,9 @@ $ capify .
 2) Click this link for recommended contents of config/deploy.rb:
 http://pastie.org/private/lodo1zveqgc2i0rto9idw
 
-3) Configure, application name, domain, repository location and server name
+3) Configure application name, domain, repository location and server name details
 
-4) Then run cap dwell:install
+4) $ cap dwell:install
 
 
 
