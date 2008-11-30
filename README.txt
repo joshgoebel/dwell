@@ -17,18 +17,8 @@ USAGE
 1) From within your Rails directory, run:
 $ capify .
 
-2) Paste the following into the config/deploy.rb
-
-set :application, "myapp"
-set :domain, "myapp.com"
-set :deploy_to, "/var/www/#{application}"
-
-# If you aren't using Subversion to manage your source code, specify your SCM below:
-# set :scm, :subversion
-set :repository,  "set your repository location here"
-
-server :app, :web, :db, "myapp.com", :primary => true
-
+2) Click this link for recommended contents of config/deploy.rb:
+http://pastie.org/private/lodo1zveqgc2i0rto9idw
 
 3) Configure, application name, domain, repository location and server name
 
@@ -44,6 +34,8 @@ STACK DETAILS
 4) Installs Subversion and Git
 5) Installs Ruby, RubyGems, Rails and Merb
 6) Installs Passenger module for Apache2 and creates basic config
+
+
 
 TODO
 
