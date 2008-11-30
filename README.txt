@@ -33,3 +33,20 @@ server :app, :web, :db, "myapp.com", :primary => true
 3) Configure, application name, domain, repository location and server name
 
 4) Then run cap dwell:install
+
+
+
+STACK DETAILS
+
+1) Updates Ubuntu sources and distro
+2) Installs Apache2
+3) Installs MySQL5
+4) Installs Subversion and Git
+5) Installs Ruby, RubyGems, Rails and Merb
+6) Installs Passenger module for Apache2 and creates basic config
+
+TODO
+
+* Generate production mysql db with details from database.yml
+* Create enhanced VirtualHost configs for Apache that include SSL
+* Configure merb uploader with controls
