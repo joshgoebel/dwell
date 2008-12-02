@@ -7,6 +7,15 @@ module Dwell1
     dwell1.append_to_file_if_missing "/etc/dwell/install_log", package
   end
 
+  def config_gsub(file, find, replace)
+    tmp="/tmp/#{File.basename(file)}"
+    get file, tmp
+    content=File.open(tmp).read
+    content.gsub!(find,replace)
+    put content, tmp
+    sudo "mv #{tmp} #{file}"
+  end
+
   def append_to_file_if_missing(filename, value, options={})
     # XXX sort out single quotes in 'value' - they'l break command!
     # XXX if options[:requires_sudo] and :use_sudo then use sudo

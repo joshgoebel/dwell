@@ -14,6 +14,11 @@ Capistrano::Configuration.instance(:must_exist).load do
         sudo "chown #{deploy_user}.admin /home/#{deploy_user}/.ssh/authorized_keys"
       end
       
+      task :disable_root_login do
+        dwell1.config_gsub "/etc/ssh/sshd_config", /^PermitRootLogin (.*)$/,"PermitRootLogin no" 
+        sudo "/etc/init.d/ssh reload"
+      end
+      
       desc "bootstrap linode box"
       task :bootstrap do
         set :deploy_user, user
