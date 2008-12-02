@@ -5,8 +5,19 @@ Capistrano::Configuration.instance(:must_exist).load do
       fix_permissions
     end
     
+    task :setup_keys do
+      if File.exist?("config/ssh/deploy_keys/#{user}")
+        put File.read("config/ssh/deploy_keys/#{user}"), "/home/#{user}/.ssh/id_rsa", :mode => 0600
+        sudo "chown #{user}.admin /home/#{user}/.ssh/id_rsa"
+        put File.read("config/ssh/deploy_keys/#{user}.pub"), "/home/#{user}/.ssh/id_rsa.pub", :mode => 0600
+        sudo "chown #{user}.admin /home/#{user}/.ssh/id_rsa.pub"
+        put File.read("config/ssh/known_hosts"), "/home/#{user}/.ssh/known_hosts", :mode => 0600
+        sudo "chown #{user}.admin /home/#{user}/.ssh/known_hosts"
+      end
+    end
+    
     task :fix_permissions do
-      sudo "chown #{user}:admin #{deploy_to}"
+      sudo "chown -R #{user}:admin #{deploy_to}"
     end
     
     namespace :db do

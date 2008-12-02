@@ -2,6 +2,8 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :dwell do
     namespace :gems do
   
+      set :rails_gem_version, nil
+  
       desc "Install RubyGems"
       task :install_rubygems do
         run "mkdir -p src"
@@ -15,6 +17,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
       desc "Install Gems"
       task :install_gems do
+        sudo "gem install rails -v#{rails_gem_version} --no-rdoc --no-ri" if rails_gem_version
         sudo "gem install rails capistrano rspec passenger mysql rdoc merb --no-rdoc --no-ri"
         dwell1.record_install "default_gems"
       end
