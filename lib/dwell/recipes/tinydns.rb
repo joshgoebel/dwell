@@ -22,7 +22,8 @@ Capistrano::Configuration.instance(:must_exist).load do
         if ubuntu1.lsb_info[:distrib_codename]=="intrepid"
           sudo "apt-get install djbdns -y"
         else
-          puts "You are running #{ubuntu1.lsb_info[:DISTRIB_CODENAME]}. Building .debs from source."
+          puts "You are running #{ubuntu1.lsb_info[:distrib_codename]}. Building .debs from source."
+          sleep 2
           build_from_source
         end
         dwell1.record_install "tinydns"
