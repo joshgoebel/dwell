@@ -16,6 +16,20 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
     end
     
+    # pulled from Capistrano and enhanced with gem installs
+    desc "cold app deploy that does gem installs as well"
+    task :first_time do
+      update
+      install_app_gems
+      migrate
+      top.dwell.apache.reload
+    end
+    
+    task :install_app_gems do
+      run "grep '^[^#]*config.gem' #{current_path}/config/environment.rb && " +
+        "cd #{current_path} && #{sudo} rake gems:install"
+    end
+    
     task :fix_permissions do
       sudo "chown -R #{user}:admin #{deploy_to}"
     end

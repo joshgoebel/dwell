@@ -21,7 +21,7 @@ PassengerRuby /usr/bin/ruby1.8
         cfg =<<-EOF
 ServerName #{domain}
 # ServerAlias #{application}.agilebox.com
-DocumentRoot #{deploy_to}/public
+DocumentRoot #{deploy_to}/current/public
         EOF
         put cfg, "/tmp/vhost"
         sudo "mv /tmp/vhost /etc/apache2/sites-available/#{application}"
