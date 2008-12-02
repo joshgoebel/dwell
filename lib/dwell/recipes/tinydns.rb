@@ -41,6 +41,19 @@ Capistrano::Configuration.instance(:must_exist).load do
         sleep 2
         run "svstat /etc/service/tinydns"
       end
+      
+      # control
+      
+      desc "Start tinydns"
+      task :start, :roles => :dns do
+        sudo "svc -u /etc/service/tinydns"
+      end
+      
+      desc "Stop tinydns"
+      task :stop, :roles => :dns do
+        sudo "svc -d /etc/service/tinydns"
+      end
+      
   
     end
   end

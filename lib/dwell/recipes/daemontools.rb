@@ -36,7 +36,6 @@ Capistrano::Configuration.instance(:must_exist).load do
         EOF
         put cfg, "/tmp/svscan"
         sudo "mv /tmp/svscan /etc/event.d/svscan"
-        sudo "initctl start svscan"
       end
       
       desc "Install daemontools"  
@@ -49,6 +48,7 @@ Capistrano::Configuration.instance(:must_exist).load do
           build_from_source
         end
         create_event_d
+        sudo "initctl start svscan"
         dwell1.record_install "daemontools"
       end
   
