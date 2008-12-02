@@ -3,7 +3,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     namespace :linode do
 
       task :create_deploy_user do
-        run "/usr/sbin/adduser #{deploy_user} --ingroup admin --disabled-password --gecos \"\""
+        dwell1.adduser deploy_user, :group => "admin"
         new_password = Capistrano::CLI.ui.ask("Enter password for #{deploy_user}:") { |q| q.echo = true }
         dwell1.invoke_with_input("passwd #{deploy_user}", /UNIX password/, new_password)
       end

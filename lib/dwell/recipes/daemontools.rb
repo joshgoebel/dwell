@@ -32,7 +32,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         stop on runlevel 6
 
         respawn
-        exec /command/svscanboot
+        exec /usr/bin/svscanboot
         EOF
         put cfg, "/tmp/svscan"
         sudo "mv /tmp/svscan /etc/event.d/svscan"

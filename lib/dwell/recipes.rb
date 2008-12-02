@@ -10,6 +10,7 @@ require "#{File.dirname(__FILE__)}/recipes/passenger"
 require "#{File.dirname(__FILE__)}/recipes/linode"
 require "#{File.dirname(__FILE__)}/recipes/imagemagick"
 require "#{File.dirname(__FILE__)}/recipes/daemontools"
+require "#{File.dirname(__FILE__)}/recipes/tinydns"
 
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :dwell do

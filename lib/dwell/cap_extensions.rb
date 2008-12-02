@@ -27,6 +27,16 @@ module Dwell1
     END
   end
   
+  def adduser(user, options={})
+    options[:shell] ||= '/bin/bash' # new accounts on ubuntu 6.06.1 have been getting /bin/sh
+    switches = '--disabled-password --gecos ""'
+    switches += " --shell=#{options[:shell]} " if options[:shell]
+    switches += ' --no-create-home ' if options[:nohome]
+    switches += " --ingroup #{options[:group]} " unless options[:group].nil?
+    invoke_command "grep '^#{user}:' /etc/passwd || sudo /usr/sbin/useradd #{switches} #{user}", 
+    :via => run_method
+  end
+  
   # create directory if it doesn't already exist
   # set permissions and ownership
   # XXX move mode, path and
