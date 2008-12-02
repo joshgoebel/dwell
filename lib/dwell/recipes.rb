@@ -11,6 +11,7 @@ require "#{File.dirname(__FILE__)}/recipes/linode"
 require "#{File.dirname(__FILE__)}/recipes/imagemagick"
 require "#{File.dirname(__FILE__)}/recipes/daemontools"
 require "#{File.dirname(__FILE__)}/recipes/tinydns"
+require "#{File.dirname(__FILE__)}/recipes/rails_app"
 
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :dwell do
