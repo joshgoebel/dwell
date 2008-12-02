@@ -10,11 +10,13 @@ Capistrano::Configuration.instance(:must_exist).load do
         run "cd src/rubygems-1.3.1 && sudo ruby setup.rb"
         run "sudo ln -s /usr/bin/gem1.8 /usr/bin/gem"
         run "cd ~/ && sudo rm -rf src"
+        dwell1.record_install "rubygems"
       end
   
       desc "Install Gems"
       task :install_gems do
         sudo "gem install rails capistrano rspec passenger mysql rdoc merb --no-rdoc --no-ri"
+        dwell1.record_install "default_gems"
       end
   
       desc "Installation"

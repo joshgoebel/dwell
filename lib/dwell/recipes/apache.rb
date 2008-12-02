@@ -4,7 +4,8 @@ Capistrano::Configuration.instance(:must_exist).load do
 
       desc "Install Apache"  
       task :install do
-        sudo "apt-get install apache2 apache2-threaded-dev -y"  
+        sudo "apt-get install apache2 apache2-threaded-dev -y"
+        dwell1.record_install "apache2"
       end
   
     end

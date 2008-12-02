@@ -5,8 +5,8 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "Install MySQL5"
       task :install, :roles => :db do
         sudo "DEBCONF_TERSE='yes' DEBIAN_PRIORITY='critical' DEBIAN_FRONTEND=noninteractive apt-get install -qyu --force-yes mysql-server mysql-client libmysqlclient15-dev"
+        dwell1.record_install "mysql5"
       end
-      
       
       # Control
       

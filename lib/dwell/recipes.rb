@@ -7,6 +7,8 @@ require "#{File.dirname(__FILE__)}/recipes/ruby"
 require "#{File.dirname(__FILE__)}/recipes/gems"
 require "#{File.dirname(__FILE__)}/recipes/passenger"
 
+require "#{File.dirname(__FILE__)}/recipes/linode"
+
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :dwell do
     

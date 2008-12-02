@@ -17,6 +17,7 @@ PassengerRuby /usr/bin/ruby1.8
         EOF
         put cfg, "/tmp/passenger"
         sudo "mv /tmp/passenger /etc/apache2/conf.d/passenger"
+        dwell1.record_install "apache2_mod_passenger"
       end
   
       desc "Setup vhost"

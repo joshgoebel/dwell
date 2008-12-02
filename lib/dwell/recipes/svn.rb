@@ -5,6 +5,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "Install SVN"
       task :install do
         sudo "apt-get install subversion -y"
+        dwell1.record_install "subversion"
       end
   
     end
