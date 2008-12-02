@@ -72,7 +72,7 @@ module Dwell1
   # input_query: A regular expression matching a request for input: /^Please enter your password/
 
   def handle_command_with_input(local_run_method, shell_command, input_query, response=nil)
-    send(local_run_method, shell_command) do |channel, stream, data|
+    send(local_run_method, shell_command, {:pty => true}) do |channel, stream, data|
       logger.info data, channel[:host]
       if data =~ input_query
         if response

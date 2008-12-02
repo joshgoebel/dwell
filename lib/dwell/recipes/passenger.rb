@@ -5,11 +5,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "Enable Passenger"
       task :enable_passenger do
         input = "\n"
-        run "sudo passenger-install-apache2-module" do |ch,stream,out|  
-          next if out.chomp == input.chomp || out.chomp == ''  
-          print out  
-          ch.send_data(input) if out =~ /enter/i  
-        end
+        dwell1.sudo_with_input "passenger-install-apache2-module", /enter/i, "\n"
         cfg =<<-EOF
 LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3/ext/apache2/mod_passenger.so
 PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3
