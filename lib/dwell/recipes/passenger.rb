@@ -7,8 +7,8 @@ Capistrano::Configuration.instance(:must_exist).load do
         input = "\n"
         dwell1.sudo_with_input "passenger-install-apache2-module", /enter/i, "\n"
         cfg =<<-EOF
-LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3/ext/apache2/mod_passenger.so
-PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.0.3
+LoadModule passenger_module /usr/lib/ruby/gems/1.8/gems/passenger-2.0.4/ext/apache2/mod_passenger.so
+PassengerRoot /usr/lib/ruby/gems/1.8/gems/passenger-2.0.4
 PassengerRuby /usr/bin/ruby1.8
         EOF
         put cfg, "/tmp/passenger"
@@ -32,7 +32,7 @@ DocumentRoot #{deploy_to}/public
       desc "Install Passenger"
       task :install do
         enable_passenger
-        setup_vhost
+#        setup_vhost
       end
   
     end
