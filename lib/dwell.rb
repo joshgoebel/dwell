@@ -6,3 +6,4 @@ end
 
 require "#{File.dirname(__FILE__)}/dwell/recipes"
 require "#{File.dirname(__FILE__)}/dwell/cap_extensions"
+require "#{File.dirname(__FILE__)}/dwell/ubuntu_extensions"

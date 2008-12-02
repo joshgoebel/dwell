@@ -17,7 +17,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "Enable build utilities"
       task :enable_build_tools do
         sudo "apt-get install build-essential -y"
-        sudo "apt-get install wget -y" # needed later
+        sudo "apt-get install wget -y" # needed later by recipes
       end
   
       desc "kill the default message of the day"
