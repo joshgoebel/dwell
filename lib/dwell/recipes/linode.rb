@@ -32,6 +32,9 @@ Capistrano::Configuration.instance(:must_exist).load do
         create_deploy_user
         copy_ssh_key
         set :user, deploy_user        
+        # test deploy login via ssh
+        sudo "echo"
+        disable_root_login
       end
 
     end
