@@ -2,13 +2,13 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :dwell do
     namespace :tinydns do
 
-      task :add_intrepid_sources do
+      task :add_intrepid_sources, :roles => :dns do
         dwell1.append_to_file_if_missing "/etc/apt/sources.list", 
           "deb-src http://archive.ubuntu.com/ubuntu intrepid main restricted universe multiverse"
         sudo "apt-get update"  
       end
 
-      task :build_from_source do
+      task :build_from_source, :roles => :dns do
         add_intrepid_sources
         run "#{sudo} rm -rf tmp"
         run "mkdir tmp"
@@ -18,7 +18,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
       
       desc "Install daemontools"  
-      task :install do
+      task :install, :roles => :dns do
         if ubuntu1.lsb_info[:distrib_codename]=="intrepid"
           sudo "apt-get install djbdns -y"
         else
@@ -31,7 +31,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       set :dns_ip, nil
       
-      task :setup do
+      task :setup, :roles => :dns do
         if dns_ip.nil?
           puts "Please set dns_ip in your deploy file to the IP of your DNS server."
           exit
@@ -54,7 +54,6 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :stop, :roles => :dns do
         sudo "svc -d /etc/service/tinydns"
       end
-      
   
     end
   end
