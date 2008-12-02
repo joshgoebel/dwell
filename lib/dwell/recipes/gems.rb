@@ -4,7 +4,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
       desc "Install RubyGems"
       task :install_rubygems do
-        run "mkdir src"
+        run "mkdir -p src"
         run "cd src && wget http://rubyforge.org/frs/download.php/45905/rubygems-1.3.1.tgz"
         run "cd src && tar xzf rubygems-1.3.1.tgz"
         run "cd src/rubygems-1.3.1 && sudo ruby setup.rb"
