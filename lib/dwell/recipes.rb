@@ -16,6 +16,8 @@ require "#{File.dirname(__FILE__)}/recipes/rails_app"
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :dwell do
     
+    set :dwell_install, []
+    
     desc "Install Rails Production Environment"
     task :install do
       top.dwell.ubuntu.prepare
@@ -26,6 +28,9 @@ Capistrano::Configuration.instance(:must_exist).load do
       top.dwell.ruby.install
       top.dwell.gems.install
       top.dwell.passenger.install
+      dwell_install.each do |package_name|
+        top.dwell.send(package_name).install
+      end
     end
   
   end

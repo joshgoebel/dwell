@@ -22,7 +22,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "bootstrap linode box"
       task :bootstrap do
         set :deploy_user, user
-        auth_keys="./config/ssh/authorized_keyss/#{deploy_user}"
+        auth_keys="config/dwell/authorized_keys/#{deploy_user}"
         unless File.exist?(auth_keys)
           puts "\n    Please place authorized SSH keys for #{deploy_user} in:"
           puts "      #{auth_keys}\n\n"
@@ -32,7 +32,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         create_deploy_user
         copy_ssh_key
         set :user, deploy_user        
-        # test deploy login via ssh
+        # test deploy login via ssh before we disable root login
         sudo "echo"
         disable_root_login
       end

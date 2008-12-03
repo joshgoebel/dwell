@@ -1,7 +1,8 @@
+require 'erb'
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :dwell do
     namespace :passenger do
-  
+        
       desc "Enable Passenger"
       task :enable_passenger do
         input = "\n"
@@ -14,19 +15,6 @@ PassengerRuby /usr/bin/ruby1.8
         put cfg, "/tmp/passenger"
         sudo "mv /tmp/passenger /etc/apache2/conf.d/passenger"
         dwell1.record_install "apache2_mod_passenger"
-      end
-  
-      desc "Setup vhost"
-      task :setup_vhost do
-        cfg =<<-EOF
-ServerName #{domain}
-# ServerAlias #{application}.agilebox.com
-DocumentRoot #{deploy_to}/current/public
-        EOF
-        put cfg, "/tmp/vhost"
-        sudo "mv /tmp/vhost /etc/apache2/sites-available/#{application}"
-        sudo "a2dissite default"
-        sudo "a2ensite #{application}"
       end
   
       desc "Install Passenger"

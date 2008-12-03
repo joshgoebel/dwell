@@ -58,7 +58,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       desc "setup a passenger config for this app"
       task :setup do
-        top.dwell.passenger.setup_vhost
+        top.dwell.apache.setup_vhost
         copy_certs
       end
       
