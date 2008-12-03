@@ -27,10 +27,21 @@ server "myserver.com", :app, :web, :db, :primary => true
 ## uncomment this to use enterprise ruby, default is the system ruby
 # set :which_ruby, :enterprise
 
+## passenger
+
+# set :passenger_use_global_queue, "off"
+# set :passenger_pool_idle_time, 300
+# set :passenger_rails_spawn_method, "smart"
+# set :passenger_max_instances_per_app, 0
+# set :passenger_max_pool_size, 6
+
+
+## apache
+
 # set :apache_server_name, nil
 # set :apache_default_vhost, false
 # set :apache_ctl, "/etc/init.d/apache2"
-# set :apache_server_aliases, []
+# set :apache_server_aliases, ["otherhostname.com","alias.net"]
 # set :apache_ssl_enabled, false
-# set :apache_ssl_ip, nil
+# set :apache_ssl_ip, "*"
 # set :apache_ssl_forward_all, false

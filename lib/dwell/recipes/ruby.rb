@@ -6,6 +6,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :install do
         run "wget -c http://rubyforge.org/frs/download.php/41041/ruby-enterprise_1.8.6-20080810-i386.deb"
         sudo "dpkg -i ruby-enterprise_1.8.6-20080810-i386.deb"
+        dwell1.record_install "enterprise_ruby"
       end
     end
     
