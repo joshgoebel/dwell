@@ -1,3 +1,4 @@
+require 'erb'
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :dwell do
     namespace :apache do
