@@ -11,7 +11,6 @@ Capistrano::Configuration.instance(:must_exist).load do
         
       desc "Enable Passenger"
       task :enable_passenger do
-        input = "\n"
         dwell1.sudo_with_input "passenger-install-apache2-module", /enter/i, "\n"
         dwell1.record_install "apache2_mod_passenger"
       end

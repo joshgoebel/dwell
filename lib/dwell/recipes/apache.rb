@@ -12,7 +12,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       # set :apache_proxy_servers, 2
       # set :apache_proxy_address, "127.0.0.1"
       set :apache_ssl_enabled, false
-      set :apache_ssl_ip, nil
+      set :apache_ssl_ip, "*"
       set :apache_ssl_forward_all, false
 
       desc "Install Apache"  
@@ -29,15 +29,29 @@ Capistrano::Configuration.instance(:must_exist).load do
         server_aliases.concat apache_server_aliases
         set :apache_server_aliases_array, server_aliases        
         
+        # port 80
         file = File.join(File.dirname(__FILE__), "../templates", "vhost.conf")
         template = File.read(file)
         buffer = ERB.new(template).result(binding)
+        # ssl
+        if apache_ssl_enabled
+          file = File.join(File.dirname(__FILE__), "../templates", "vhost_ssl.conf")
+          template = File.read(file)
+          buffer += ERB.new(template).result(binding)
+        end        
+        
         put buffer, "/tmp/vhost"
         sudo "mv /tmp/vhost /etc/apache2/sites-available/#{application}"
         sudo "a2dissite default"
         sudo "a2ensite #{application}"
         # enable some modules we need
         sudo "a2enmod rewrite"
+        sudo "a2enmod ssl" if apache_ssl_enabled
+      end
+      
+      desc "disable this virtual host"
+      task :disable_vhost do
+        sudo "a2dissite #{application}"
       end
   
       # Control
