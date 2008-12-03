@@ -1,6 +1,8 @@
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :deploy do
     
+    set :known_hosts, []
+    
     after "deploy:setup" do
       fix_permissions
     end
@@ -10,15 +12,18 @@ Capistrano::Configuration.instance(:must_exist).load do
       run "touch #{current_path}/tmp/restart.txt"
     end
     
-    task :setup_keys do
+    task :setup_deploy_keys do
       if File.exist?("config/ssh/deploy_keys/#{user}")
         put File.read("config/ssh/deploy_keys/#{user}"), "/home/#{user}/.ssh/id_rsa", :mode => 0600
         sudo "chown #{user}.admin /home/#{user}/.ssh/id_rsa"
         put File.read("config/ssh/deploy_keys/#{user}.pub"), "/home/#{user}/.ssh/id_rsa.pub", :mode => 0600
         sudo "chown #{user}.admin /home/#{user}/.ssh/id_rsa.pub"
-        put File.read("config/ssh/known_hosts"), "/home/#{user}/.ssh/known_hosts", :mode => 0600
-        sudo "chown #{user}.admin /home/#{user}/.ssh/known_hosts"
       end
+      known_hosts.each do |host|
+        key=File.open("#{File.dirname(__FILE__)}/../known_hosts/#{host}").read
+        dwell1.append_to_file_if_missing("/home/#{user}/.ssh/known_hosts", key)
+      end
+      sudo "chown #{user}.admin /home/#{user}/.ssh/known_hosts"
     end
     
     # pulled from Capistrano and enhanced with gem installs
