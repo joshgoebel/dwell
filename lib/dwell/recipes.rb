@@ -18,6 +18,8 @@ Capistrano::Configuration.instance(:must_exist).load do
   default_run_options[:pty] = true
   set :keep_releases, 3
   
+  set :which_ruby, :system
+  
   namespace :dwell do
     
     set :dwell_install, []
@@ -30,6 +32,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       top.dwell.svn.install
       top.dwell.git.install
       top.dwell.ruby.install
+      top.dwell.ruby_enterprise.install if which_ruby==:enterprise
       top.dwell.gems.install
       top.dwell.passenger.install
       dwell_install.each do |package_name|

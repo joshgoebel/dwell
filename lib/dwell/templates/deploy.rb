@@ -24,6 +24,9 @@ server "myserver.com", :app, :web, :db, :primary => true
 ## gem installed during dwell:install
 # set :rails_gem_version, "=2.1.2"
 
+## uncomment this to use enterprise ruby, default is the system ruby
+# set :which_ruby, :enterprise
+
 # set :apache_server_name, nil
 # set :apache_default_vhost, false
 # set :apache_ctl, "/etc/init.d/apache2"

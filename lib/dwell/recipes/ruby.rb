@@ -1,5 +1,14 @@
 Capistrano::Configuration.instance(:must_exist).load do 
   namespace :dwell do
+    namespace :ruby_enterprise do
+      
+      desc "Install Ruby Enterprise 1.8.6 for Ubuntu 8.04"
+      task :install do
+        run "wget -c http://rubyforge.org/frs/download.php/41041/ruby-enterprise_1.8.6-20080810-i386.deb"
+        sudo "dpkg -i ruby-enterprise_1.8.6-20080810-i386.deb"
+      end
+    end
+    
     namespace :ruby do
   
       desc "Install Ruby 1.8.6"
