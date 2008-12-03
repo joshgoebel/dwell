@@ -25,6 +25,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     
     before  'deploy:update_code', 'app:symlinks:setup'
     after   'deploy:symlink', 'app:symlinks:update'
+    after   :deploy,'deploy:cleanup'
     
     set :known_hosts, []
     
@@ -66,7 +67,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     
     # pulled from Capistrano and enhanced with gem installs
     desc "cold app deploy that does gem installs as well"
-    task :first_time do
+    task :cold do
       update
       install_app_gems
       migrate

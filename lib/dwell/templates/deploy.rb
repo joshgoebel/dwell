@@ -9,7 +9,6 @@ set :repository,  "svn://myapp.com/trunk"
 set :user, "deploy"
 set :deploy_to, "/var/www/#{application}"
 server "myserver.com", :app, :web, :db, :primary => true
-default_run_options[:pty] = true
 
 ## the user to use when creating new databases and such
 # set :mysql_admin, "root"

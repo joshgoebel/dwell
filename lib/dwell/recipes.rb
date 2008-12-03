@@ -14,6 +14,10 @@ require "#{File.dirname(__FILE__)}/recipes/tinydns"
 require "#{File.dirname(__FILE__)}/recipes/rails_app"
 
 Capistrano::Configuration.instance(:must_exist).load do 
+  
+  default_run_options[:pty] = true
+  set :keep_releases, 3
+  
   namespace :dwell do
     
     set :dwell_install, []
