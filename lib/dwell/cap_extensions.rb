@@ -27,6 +27,13 @@ module Dwell1
     END
   end
   
+  def sudo_upload(from, to, options={}, &block)
+    top.upload from, "/tmp/#{File.basename(to)}", options, &block
+    sudo "mv /tmp/#{File.basename(to)} #{to}"
+    sudo "chmod #{options[:mode]} #{to}" if options[:mode]
+    sudo "chown #{options[:owner]} #{to}" if options[:owner]
+  end
+  
   def adduser(user, options={})
     options[:shell] ||= '/bin/bash' # new accounts on ubuntu 6.06.1 have been getting /bin/sh
     switches = '--disabled-password --gecos ""'

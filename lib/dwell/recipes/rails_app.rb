@@ -59,7 +59,17 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "setup a passenger config for this app"
       task :setup do
         top.dwell.passenger.setup_vhost
-#        reload
+        copy_certs
+      end
+      
+      task :copy_certs do
+        Dir.glob("config/dwell/ssl/*").each do |file|
+          basename=File.basename(file)
+          dwell1.sudo_upload file, "/etc/ssl/certs/#{basename}" if file=~/.crt/
+          if file=~/.key/      
+            dwell1.sudo_upload file, "/etc/ssl/private/#{basename}", :mode => 0600, :owner => "root.admin"
+          end
+        end
       end
       
       # %w{reload start stop restart}.each do |command|
