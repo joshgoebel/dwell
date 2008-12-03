@@ -5,6 +5,11 @@ Capistrano::Configuration.instance(:must_exist).load do
       fix_permissions
     end
     
+    puts "defining my restart"
+    task :restart do
+      run "touch #{current_path}/tmp/restart.txt"
+    end
+    
     task :setup_keys do
       if File.exist?("config/ssh/deploy_keys/#{user}")
         put File.read("config/ssh/deploy_keys/#{user}"), "/home/#{user}/.ssh/id_rsa", :mode => 0600
