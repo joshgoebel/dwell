@@ -10,7 +10,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       task :copy_ssh_key do
         dwell1.mkdir "/home/#{deploy_user}/.ssh", :mode => 0700, :owner => "#{deploy_user}.admin"
-        put File.read("config/ssh/authorized_keys/#{deploy_user}"), "/home/#{deploy_user}/.ssh/authorized_keys", :mode => 0600
+        put File.read("config/dwell/authorized_keys/#{deploy_user}"), "/home/#{deploy_user}/.ssh/authorized_keys", :mode => 0600
         sudo "chown #{deploy_user}.admin /home/#{deploy_user}/.ssh/authorized_keys"
       end
       

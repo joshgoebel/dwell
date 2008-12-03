@@ -5,6 +5,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     
     after "deploy:setup" do
       fix_permissions
+      setup_deploy_keys
     end
     
     puts "defining my restart"
@@ -13,10 +14,10 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
     
     task :setup_deploy_keys do
-      if File.exist?("config/ssh/deploy_keys/#{user}")
-        put File.read("config/ssh/deploy_keys/#{user}"), "/home/#{user}/.ssh/id_rsa", :mode => 0600
+      if File.exist?("config/dwell/deploy_keys/#{user}")
+        put File.read("config/dwell/deploy_keys/#{user}"), "/home/#{user}/.ssh/id_rsa", :mode => 0600
         sudo "chown #{user}.admin /home/#{user}/.ssh/id_rsa"
-        put File.read("config/ssh/deploy_keys/#{user}.pub"), "/home/#{user}/.ssh/id_rsa.pub", :mode => 0600
+        put File.read("config/dwell/deploy_keys/#{user}.pub"), "/home/#{user}/.ssh/id_rsa.pub", :mode => 0600
         sudo "chown #{user}.admin /home/#{user}/.ssh/id_rsa.pub"
       end
       known_hosts.each do |host|
