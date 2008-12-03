@@ -1,5 +1,30 @@
 Capistrano::Configuration.instance(:must_exist).load do 
+  namespace :app do
+    namespace :symlinks do
+
+      set :app_symlinks, nil
+  
+      desc "Setup application symlinks in the public"
+      task :setup, :roles => [:app, :web] do
+        if app_symlinks
+          app_symlinks.each { |link| run "mkdir -p #{shared_path}/public/#{link}" }
+        end
+      end
+
+      desc "Link public directories to shared location."
+      task :update, :roles => [:app, :web] do
+        if app_symlinks
+          app_symlinks.each { |link| run "ln -nfs #{shared_path}/public/#{link} #{current_path}/public/#{link}" }
+        end
+      end
+  
+    end
+  end
+  
   namespace :deploy do
+    
+    before  'deploy:update_code', 'app:symlinks:setup'
+    after   'deploy:symlink', 'app:symlinks:update'
     
     set :known_hosts, []
     
