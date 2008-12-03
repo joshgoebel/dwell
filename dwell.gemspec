@@ -2,7 +2,7 @@ require 'rubygems'
 
 SPEC = Gem::Specification.new do |s|
   s.name = 'dwell'
-  s.version = '0.1'
+  s.version = '0.1.99'
   
   s.authors = ['Robert Bousquet','Josh Goebel']
   s.description = "Automated Rails production environment setup for Ubuntu"
