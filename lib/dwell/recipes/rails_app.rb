@@ -8,9 +8,21 @@ Capistrano::Configuration.instance(:must_exist).load do
       setup_deploy_keys
     end
     
-    puts "defining my restart"
+    puts "restart your rails app"
     task :restart do
       run "touch #{current_path}/tmp/restart.txt"
+    end
+
+    task :stop do
+      puts "NOTE: You can't really start and stop a passenger app, try 'restart'."
+    end
+
+    task :start do
+      puts "NOTE: You can't really start and stop a passenger app, try 'restart'."
+    end    
+
+    task :fix_permissions do
+      sudo "chown -R #{user}:admin #{deploy_to}"
     end
     
     task :setup_deploy_keys do
@@ -41,10 +53,6 @@ Capistrano::Configuration.instance(:must_exist).load do
         "cd #{current_path} && #{sudo} rake gems:install"
     end
     
-    task :fix_permissions do
-      sudo "chown -R #{user}:admin #{deploy_to}"
-    end
-    
     namespace :db do
       
       desc "setup the database automatically"
@@ -71,14 +79,7 @@ Capistrano::Configuration.instance(:must_exist).load do
           end
         end
       end
-      
-      # %w{reload start stop restart}.each do |command|
-      #   desc "#{command} the web server"
-      #   task command.to_sym do
-      #     top.dwell.apache.send command.clone
-      #   end
-      # end
-        
+
     end
   end
 end
