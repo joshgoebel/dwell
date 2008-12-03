@@ -40,8 +40,7 @@ STACK DETAILS
 TODO
 
 * Generate production mysql db with details from database.yml
-* Create enhanced VirtualHost configs for Apache that include SSL
 * Configure merb uploader with controls
-* Install FreeImage+ImageScience and/or ImageMagick+MiniMagick
+* Install FreeImage+ImageScience 
 * Ensure the script is re-runnable
 * Add more controls to start/stop/reload/restart each piece
