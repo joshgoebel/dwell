@@ -55,6 +55,12 @@ gateway #{gateway}
           exit
         end
         set :user, "root"
+        if ubuntu1.lsb_info[:distrib_codename]=="intrepid"
+          # for linode's slimmed down intrepid
+          run "addgroup admin"
+          dwell1.append_to_file_if_missing "/etc/sudoers", "%admin ALL=(ALL) ALL"
+          sudo "apt-get install ubuntu-standard -y" 
+        end
         create_deploy_user
         copy_ssh_key
         set :user, deploy_user        

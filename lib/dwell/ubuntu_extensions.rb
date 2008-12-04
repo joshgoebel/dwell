@@ -8,7 +8,7 @@ module Ubuntu1
     all = File.open("/tmp/lsb-release").read
     all.split("\n").inject({}) do |sum,n| 
       l,v=n.split("=")
-      sum[l.downcase]=v.gsub(/^"?(.*)/,"\\1").gsub(/"$/,"")
+      sum[l.downcase.to_sym]=v.gsub(/^"?(.*)/,"\\1").gsub(/"$/,"")
       sum
     end
   end

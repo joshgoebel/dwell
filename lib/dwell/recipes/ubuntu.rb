@@ -22,7 +22,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
       desc "kill the default message of the day"
       task :kill_motd do
-        sudo "test ! -f /etc/motd || mv /etc/motd /etc/motd.silent"
+        run "test ! -f /etc/motd || #{sudo} mv /etc/motd /etc/motd.silent"
       end
   
       task :setup_dwell_storage do

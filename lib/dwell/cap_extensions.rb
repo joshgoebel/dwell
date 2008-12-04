@@ -40,7 +40,7 @@ module Dwell1
     switches += " --shell=#{options[:shell]} " if options[:shell]
     switches += ' --no-create-home ' if options[:nohome]
     switches += " --ingroup #{options[:group]} " unless options[:group].nil?
-    invoke_command "grep '^#{user}:' /etc/passwd || sudo /usr/sbin/useradd #{switches} #{user}", 
+    invoke_command "grep '^#{user}:' /etc/passwd || sudo /usr/sbin/adduser #{user} #{switches}", 
     :via => run_method
   end
   

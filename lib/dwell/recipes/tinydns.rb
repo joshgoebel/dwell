@@ -19,6 +19,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       desc "Install daemontools"  
       task :install, :roles => :dns do
+        sudo "touch /etc/inittab" # install blows up if this file is not present
         if ubuntu1.lsb_info[:distrib_codename]=="intrepid"
           sudo "apt-get install djbdns -y"
         else
