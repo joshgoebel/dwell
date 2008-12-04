@@ -18,10 +18,18 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       task :setup_config do
         set :passenger_ruby, "/opt/ruby-enterprise/bin/ruby" if which_ruby==:enterprise
+        run "gem list --local | grep passenger" do |channel, stream, data|
+          if data.match(/passenger \(([^ ,)]*)/)
+            set :passenger_version, $1
+          else
+            raise "couldn't determine version of passenger gem"
+          end
+        end
         file = File.join(File.dirname(__FILE__), "../templates", "passenger.conf")
         template = File.read(file)
         buffer = ERB.new(template).result(binding)
         put buffer, "/tmp/passenger"
+        puts buffer
         sudo "mv /tmp/passenger /etc/apache2/conf.d/passenger"
       end
   
