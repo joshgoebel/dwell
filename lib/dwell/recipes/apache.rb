@@ -46,6 +46,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         sudo "a2ensite #{application}"
         # enable some modules we need
         sudo "a2enmod rewrite"
+        sudo "a2enmod deflate"
         sudo "a2enmod ssl" if apache_ssl_enabled
       end
       
@@ -74,6 +75,11 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "Reload Apache"
       task :reload, :roles => :web do
         sudo "#{apache_ctl} reload"
+      end
+
+      desc "Force Reload Apache"
+      task :force_reload, :roles => :web do
+        sudo "#{apache_ctl} force-reload"
       end
   
   
