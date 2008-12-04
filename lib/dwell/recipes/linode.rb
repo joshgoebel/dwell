@@ -42,7 +42,7 @@ gateway #{gateway}
           sudo "chown root:root /etc/network/interfaces"
           sudo "/etc/init.d/networking restart"
           # kill the dhcp client
-          sudo "kill -9 `cat /var/run/dhclient.eth0.pid`"
+          sudo "pkill dhclient3"
       end
       
       desc "bootstrap linode box"
