@@ -11,7 +11,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       desc "Install gems for ImageMagick"
       task :install_gems do
         sudo "apt-get install libmagick++9-dev -y" # needed to build the rmagick gem
-        sudo "gem install rmagick mini_magick"
+        sudo "gem install rmagick mini_magick --no-rdoc --no-ri"
         dwell1.record_install "gem: rmagick, mini_magick"
       end
   
