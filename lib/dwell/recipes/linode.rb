@@ -19,6 +19,32 @@ Capistrano::Configuration.instance(:must_exist).load do
         sudo "/etc/init.d/ssh reload"
       end
       
+      desc "setup static ip address" 
+      task :setup_static_ip do
+        ip,broadcast,mask,gateway=nil
+        run "/sbin/ifconfig eth0" do |channel, stream, data|
+          if data.match(/inet addr:([^ ]*)  Bcast:([^ ]*)  Mask:([^ ]*)/)
+            ip, broadcast, mask = $1, $2, $3
+          end
+        end
+        run "ip route" do |channel, stream, data|
+          gateway=$1 if data.match(/default via ([^ ]*) dev eth0/)
+        end
+
+          interface=<<-EOS
+iface eth0 inet static
+address #{ip}
+netmask #{mask.strip}
+broadcast #{broadcast}
+gateway #{gateway}
+          EOS
+          dwell1.config_gsub "/etc/network/interfaces", "iface eth0 inet dhcp", interface
+          sudo "chown root:root /etc/network/interfaces"
+          sudo "/etc/init.d/networking restart"
+          # kill the dhcp client
+          sudo "kill -9 `cat /var/run/dhclient.eth0.pid`"
+      end
+      
       desc "bootstrap linode box"
       task :bootstrap do
         set :deploy_user, user
@@ -35,6 +61,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         # test deploy login via ssh before we disable root login
         sudo "echo"
         disable_root_login
+        setup_static_ip
       end
 
     end
