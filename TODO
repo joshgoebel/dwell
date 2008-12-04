@@ -1,0 +1,5 @@
+TODO
+
+* Generate production mysql db with details from database.yml
+* Configure merb uploader with controls
+* Install FreeImage+ImageScience 

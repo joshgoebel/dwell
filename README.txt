@@ -35,12 +35,3 @@ STACK DETAILS
 5) Installs Ruby, RubyGems, Rails and Merb
 6) Installs Passenger module for Apache2 and creates basic config
 
-
-
-TODO
-
-* Generate production mysql db with details from database.yml
-* Configure merb uploader with controls
-* Install FreeImage+ImageScience 
-* Ensure the script is re-runnable
-* Add more controls to start/stop/reload/restart each piece
