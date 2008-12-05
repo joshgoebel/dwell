@@ -7,7 +7,8 @@ Capistrano::Configuration.instance(:must_exist).load do
       #   :account => "campfireurl",
       #   :login => "user@email.com",
       #   :password => "blah",
-      #   :room => "AutoRaptor: Shadow"
+      #   :ssl => true,
+      #   :room => "Dwell Room"
       # }
 
       def campfire_bot
