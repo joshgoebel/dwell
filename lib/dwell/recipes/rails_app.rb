@@ -2,16 +2,28 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :app do
     namespace :symlinks do
 
-      set :public_symlinks, []
+      set :app_symlinks, {}
   
+      def new_symlink_style
+        set :app_symlinks, { :public => app_symlinks } if app_symlinks.is_a?(Array)
+      end
+      
       desc "Setup application symlinks in the public"
       task :setup, :roles => [:app, :web] do
-        public_symlinks.each { |link| run "mkdir -p #{shared_path}/public/#{link}" }
+        new_symlink_style
+        app_symlinks.each do |key, value|
+          dir=(key==:root) ? "" : key+"/"
+          value.each { |link| run "mkdir -p #{shared_path}/#{dir}#{link}" }
+        end
       end
 
       desc "Link public directories to shared location."
       task :update, :roles => [:app, :web] do
-        public_symlinks.each { |link| run "ln -nfs #{shared_path}/public/#{link} #{current_path}/public/#{link}" }
+        new_symlink_style
+        app_symlinks.each do |key, value|
+          dir=(key==:root) ? "" : key+"/"
+          value.each { |link| run "ln -nfs #{shared_path}/#{dir}#{link} #{current_path}/#{dir}#{link}" }
+        end
       end
   
     end
@@ -19,34 +31,21 @@ Capistrano::Configuration.instance(:must_exist).load do
   
   namespace :deploy do
     
-    before  'deploy:update_code', 'app:symlinks:setup'
-    after   'deploy:symlink', 'app:symlinks:update'
-    after   :deploy,'deploy:cleanup'
-    
     set :known_hosts, []
     
+    def railsmachine_gem?
+      top.respond_to?(:apache) and top.apache.respond_to?(:set_apache_conf)
+    end
+
     after "deploy:setup" do
       fix_permissions
       setup_deploy_keys
     end
-    
-    puts "restart your rails app"
-    task :restart do
-      run "touch #{current_path}/tmp/restart.txt"
-    end
-
-    task :stop do
-      puts "NOTE: You can't really start and stop a passenger app, try 'restart'."
-    end
-
-    task :start do
-      puts "NOTE: You can't really start and stop a passenger app, try 'restart'."
-    end    
 
     task :fix_permissions do
       sudo "chown -R #{user}:admin #{deploy_to}"
     end
-    
+
     task :setup_deploy_keys do
       if File.exist?("config/dwell/deploy_keys/#{user}")
         put File.read("config/dwell/deploy_keys/#{user}"), "/home/#{user}/.ssh/id_rsa", :mode => 0600
@@ -61,18 +60,39 @@ Capistrano::Configuration.instance(:must_exist).load do
       sudo "chown #{user}.admin /home/#{user}/.ssh/known_hosts"
     end
     
-    # pulled from Capistrano and enhanced with gem installs
-    desc "cold app deploy that does gem installs as well"
-    task :cold do
-      update
-      install_app_gems
-      migrate
-      top.dwell.apache.reload
-    end
-    
     task :install_app_gems do
       run "grep '^[^#]*config.gem' #{current_path}/config/environment.rb && " +
         "cd #{current_path} && #{sudo} rake gems:install"
+    end
+
+    before  'deploy:update_code', 'app:symlinks:setup'
+    after   'deploy:symlink', 'app:symlinks:update'
+    after   :deploy,'deploy:cleanup'
+    
+    # don't mess with rails machine stuff
+    unless railsmachine_gem?
+        
+      puts "restart your rails app"
+      task :restart do
+        run "touch #{current_path}/tmp/restart.txt"
+      end
+
+      [:start, :stop].each do |t|
+        desc "The :#{t} task has no effect when using Passenger as your application server."
+        task t, :roles => :app do
+          puts "The :#{t} task has no effect when using Passenger as your application server."
+        end
+      end
+    
+      # pulled from Capistrano and enhanced with gem installs
+      desc "cold app deploy that does gem installs as well"
+      task :cold do
+        update
+        install_app_gems
+        migrate
+        top.dwell.apache.reload
+      end
+    
     end
     
     namespace :db do

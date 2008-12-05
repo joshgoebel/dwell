@@ -14,6 +14,7 @@ require "#{File.dirname(__FILE__)}/recipes/daemontools"
 require "#{File.dirname(__FILE__)}/recipes/tinydns"
 require "#{File.dirname(__FILE__)}/recipes/sqlite"
 require "#{File.dirname(__FILE__)}/recipes/rails_app"
+require "#{File.dirname(__FILE__)}/recipes/campfire"
 
 Capistrano::Configuration.instance(:must_exist).load do 
   

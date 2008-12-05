@@ -8,6 +8,18 @@ Capistrano::Configuration.instance(:must_exist).load do
         dwell1.record_install "git"
       end
 
+      before "deploy" do
+        return unless scm==:git
+        st=`git status`
+        if st=~/branch is ahead/ and not ENV['FORCE']
+          puts
+          puts " * Your local branch appears to be ahead of the remote.  Do you need to push?"
+          puts " * You can force a deploy with FORCE=whatever if you wish."
+          puts
+          exit
+        end
+      end
+
     end
   end
 end
