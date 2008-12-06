@@ -1,20 +1,5 @@
-require "#{File.dirname(__FILE__)}/recipes/ubuntu"
-require "#{File.dirname(__FILE__)}/recipes/apache"
-require "#{File.dirname(__FILE__)}/recipes/mysql"
-require "#{File.dirname(__FILE__)}/recipes/svn"
-require "#{File.dirname(__FILE__)}/recipes/git"
-require "#{File.dirname(__FILE__)}/recipes/ruby"
-require "#{File.dirname(__FILE__)}/recipes/gems"
-require "#{File.dirname(__FILE__)}/recipes/passenger"
-
-require "#{File.dirname(__FILE__)}/recipes/mercurial"
-require "#{File.dirname(__FILE__)}/recipes/linode"
-require "#{File.dirname(__FILE__)}/recipes/imagemagick"
-require "#{File.dirname(__FILE__)}/recipes/daemontools"
-require "#{File.dirname(__FILE__)}/recipes/tinydns"
-require "#{File.dirname(__FILE__)}/recipes/sqlite"
-require "#{File.dirname(__FILE__)}/recipes/rails_app"
-require "#{File.dirname(__FILE__)}/recipes/campfire"
+Dir.glob("#{File.dirname(__FILE__)}/recipes/*").each { |f| require f if File.file?(f) }
+Dir.glob("#{File.dirname(__FILE__)}/recipes/extras/*").each { |f| require f }
 
 Capistrano::Configuration.instance(:must_exist).load do 
   
