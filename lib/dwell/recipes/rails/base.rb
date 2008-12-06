@@ -7,7 +7,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :dwell do
     namespace :rails do
       
-      desc "fully setup the application and cold deploy it" do
+      desc "fully setup the application and cold deploy it"
       task :setup_and_deploy_cold do
         top.deploy.setup
         top.app.db.setup
