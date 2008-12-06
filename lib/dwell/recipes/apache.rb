@@ -54,6 +54,16 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :disable_vhost do
         sudo "a2dissite #{application}"
       end
+      
+      task :copy_certs do
+        Dir.glob("config/dwell/ssl/*").each do |file|
+          basename=File.basename(file)
+          dwell1.sudo_upload file, "/etc/ssl/certs/#{basename}" if file=~/.crt/
+          if file=~/.key/      
+            dwell1.sudo_upload file, "/etc/ssl/private/#{basename}", :mode => 0600, :owner => "root.admin"
+          end
+        end
+      end
   
       # Control
       
