@@ -10,13 +10,14 @@ Capistrano::Configuration.instance(:must_exist).load do
       set :passenger_max_pool_size, 6
       set :passenger_ruby, "/usr/bin/ruby1.8"
               
-      desc "Enable Passenger"
-      task :enable_passenger do
+      desc "Install Passenger Apache 2 module"
+      task :install_passenger_module do
         dwell1.sudo_with_input "passenger-install-apache2-module", /enter/i, "\n"
         dwell1.record_install "apache2_mod_passenger"
       end
       
-      task :setup_config do
+      desc "Setup the configuration for mod_massenger"
+      task :setup do
         set :passenger_ruby, "/opt/ruby-enterprise/bin/ruby" if which_ruby==:enterprise
         run "gem list --local | grep passenger" do |channel, stream, data|
           if data.match(/passenger \(([^ ,)]*)/)
@@ -35,9 +36,8 @@ Capistrano::Configuration.instance(:must_exist).load do
   
       desc "Install Passenger"
       task :install do
-        enable_passenger
-        setup_config
-#        setup_vhost
+        install_passenger_module
+        setup
       end
   
     end

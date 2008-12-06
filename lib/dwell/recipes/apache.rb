@@ -21,38 +21,47 @@ Capistrano::Configuration.instance(:must_exist).load do
         dwell1.record_install "apache2"
       end
 
-      desc "Setup vhost"
-      task :setup_vhost do
-        set :apache_server_name, domain unless apache_server_name
-        server_aliases = []
-        server_aliases << "www.#{apache_server_name}" unless apache_server_name =~ /^www\./
-        server_aliases.concat apache_server_aliases
-        set :apache_server_aliases_array, server_aliases        
-        
-        # port 80
-        file = File.join(File.dirname(__FILE__), "../templates", "vhost.conf")
-        template = File.read(file)
-        buffer = ERB.new(template).result(binding)
-        # ssl
-        if apache_ssl_enabled
-          file = File.join(File.dirname(__FILE__), "../templates", "vhost_ssl.conf")
-          template = File.read(file)
-          buffer += ERB.new(template).result(binding)
-        end        
-        
-        put buffer, "/tmp/vhost"
-        sudo "mv /tmp/vhost /etc/apache2/sites-available/#{application}"
-        sudo "a2dissite default"
-        sudo "a2ensite #{application}"
-        # enable some modules we need
-        sudo "a2enmod rewrite"
-        sudo "a2enmod deflate"
-        sudo "a2enmod ssl" if apache_ssl_enabled
+      # shorter form
+      task :setup do
+        site.setup
       end
+    
+      namespace :site do
+    
+        desc "Configure site for apache"
+        task :setup do
+          set :apache_server_name, domain unless apache_server_name
+          server_aliases = []
+          server_aliases << "www.#{apache_server_name}" unless apache_server_name =~ /^www\./
+          server_aliases.concat apache_server_aliases
+          set :apache_server_aliases_array, server_aliases        
+        
+          # port 80
+          file = File.join(File.dirname(__FILE__), "../templates", "vhost.conf")
+          template = File.read(file)
+          buffer = ERB.new(template).result(binding)
+          # ssl
+          if apache_ssl_enabled
+            file = File.join(File.dirname(__FILE__), "../templates", "vhost_ssl.conf")
+            template = File.read(file)
+            buffer += ERB.new(template).result(binding)
+          end        
+        
+          put buffer, "/tmp/vhost"
+          sudo "mv /tmp/vhost /etc/apache2/sites-available/#{application}"
+          sudo "a2dissite default"
+          sudo "a2ensite #{application}"
+          # enable some modules we need
+          sudo "a2enmod rewrite"
+          sudo "a2enmod deflate"
+          sudo "a2enmod ssl" if apache_ssl_enabled
+        end
       
-      desc "disable this virtual host"
-      task :disable_vhost do
-        sudo "a2dissite #{application}"
+        desc "Disable this site"
+        task :disable do
+          sudo "a2dissite #{application}"
+        end
+        
       end
       
       task :copy_certs do

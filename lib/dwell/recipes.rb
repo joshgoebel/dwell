@@ -1,4 +1,5 @@
 Dir.glob("#{File.dirname(__FILE__)}/recipes/*").each { |f| require f if File.file?(f) }
+Dir.glob("#{File.dirname(__FILE__)}/recipes/bootstrap/*").each { |f| require f }
 Dir.glob("#{File.dirname(__FILE__)}/recipes/extras/*").each { |f| require f }
 
 Capistrano::Configuration.instance(:must_exist).load do 
