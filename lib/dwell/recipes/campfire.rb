@@ -1,6 +1,6 @@
 Capistrano::Configuration.instance(:must_exist).load do 
 
-  namespace :deploy do
+  namespace :dwell do
     namespace :campfire do
       set :campfire, nil
       # set :campfire, {
