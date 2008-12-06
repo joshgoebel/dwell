@@ -47,7 +47,7 @@ Capistrano::Configuration.instance(:must_exist).load do
     # lets not overwrite rails machine - try and be compatible
     unless top.app.railsmachine_gem?
         
-      puts "restart your rails app"
+      desc "restart your rails app"
       task :restart do
         run "touch #{current_path}/tmp/restart.txt"
       end

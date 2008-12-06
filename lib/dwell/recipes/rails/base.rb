@@ -7,6 +7,14 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :dwell do
     namespace :rails do
       
+      desc "fully setup the application and cold deploy it" do
+      task :setup_and_deploy_cold do
+        top.deploy.setup
+        top.app.db.setup
+        top.app.web.setup
+        top.deploy.cold
+      end
+      
       desc "install the gems specified with config.gem"
       task :install_app_gems do
         run "grep '^[^#]*config.gem' #{current_path}/config/environment.rb && " +
