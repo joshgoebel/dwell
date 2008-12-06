@@ -36,6 +36,29 @@ Capistrano::Configuration.instance(:must_exist).load do
         sudo "chown #{user}.admin /home/#{user}/.ssh/known_hosts"
       end
       
+      namespace :shared do
+        desc "dump shared file to archive" 
+        task :archive, :roles => :app, :only => { :primary => true } do
+          to_backup=[]
+          app_symlinks.map do |key, value|
+            dir=(key==:root) ? value : key
+            to_backup << "shared/" + dir
+          end
+          run "cd #{deploy_to} && tar -czf shared.tar.gz #{to_backup.join " "}"
+        end
+
+        desc "fetch shared files locally"
+        task :fetch, :roles => :app, :only => { :primary => true } do
+          get "#{deploy_to}/shared.tar.gz", "shared.tar.gz"
+        end
+
+        desc "push shared archive to the remote"
+        task :push, :roles => :app, :only => { :primary => true } do
+          upload "shared.tar.gz", "#{deploy_to}/shared.tar.gz"
+        end
+        
+      end
+      
       namespace :symlinks do
 
         set :app_symlinks, {}
