@@ -13,7 +13,6 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       task :push_ssh_keys do
         set :deploy_user, user if deploy_user.nil?
-        puts "pushing keys for: #{deploy_user}"
         dwell1.mkdir "/home/#{deploy_user}/.ssh", :mode => 0700, 
           :owner => "#{deploy_user}.admin", :via => :sudo
         run "rm -f /home/#{deploy_user}/.ssh/authorized_keys"
