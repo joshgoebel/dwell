@@ -15,26 +15,15 @@ DWELL - Capistrano recipe to setup a production Rails environment on Ubuntu.
 Usage
 -----
 
-1) From within your Rails directory, run:
-$ capify .
-
-2) Click this link for recommended contents of config/deploy.rb:
-http://pastie.org/private/lodo1zveqgc2i0rto9idw
-
-3) Configure application name, domain, repository location and server name details
-
-4) Bootstrap your server (which copies over ssh keys, sets up the deploy account, etc)
-   There is also a dwell:linode:bootstrap if you're using Linode.
-$ cap dwell:server:bootstrap
-
-4) Install the full Dwell stack and any optional packages
-$ cap dwell:install
-
-4) Setup your rails app and Apache vhost, etc
-$ cap dwell:rails:setup_and_deploy_cold
+1. From within your Rails directory, run: `$ capify .`
+2. Click this link for recommended contents of config/deploy.rb: `http://pastie.org/private/lodo1zveqgc2i0rto9idw`
+3. Configure you application name, domain, repository location and server name details in your deploy.rb
+4.  Bootstrap your server (which copies over ssh keys, sets up the deploy account, etc) with `cap dwell:server:bootstrap`.  There is also a dwell:linode:bootstrap if you're using Linode.
+5. Install the Dwell stack and any optional packages: `cap dwell:install`
+6. Setup your rails app and Apache vhost, etc: `cap dwell:rails:setup_and_deploy_cold`
 
 
-The Full Dwell Stack - dwell:install
+The Dwell Stack - dwell:install
 -----------------------------
 
 1. Updates Ubuntu sources and distro
@@ -43,31 +32,32 @@ The Full Dwell Stack - dwell:install
 4. Installs Subversion and Git
 5. Installs Ruby, RubyGems, Rails and Merb
 6. Installs Passenger module for Apache2
-7. Installs any optional packages listed in :dwell_install
+7. Installs any optional packages listed in `:dwell_install`
 
 
-Optional Packages
------------------
+### Optional Packages
 
 You can specify optional packages to be installed during `dwell:install` in your deploy.rb file:
 
-    set :dwell_install, [:postfix, :imagemagick, :php]
+    set :dwell_optional_installs, [:postfix, :imagemagick, :php]
     
 Optional packages include:
 
-#   postfix
-#   mercurial
-#   tinydns
-#   php (sets up php via fastcig)
-#   imagemagick (binary, gem, and mini-magick gem)
-#   sqlite (binary and gem)
+- postfix
+- mercurial
+- tinydns
+- php (sets up php via fastcig)
+- imagemagick (binary, gem, and mini-magick gem)
+- sqlite (binary and gem)
 
 
-Bootstrapping - dwell:server:bootstrap
---------------------------------------
+Bootstrapping
+-------------
 
-1.  Creates a user account for :user (default 'deploy') in the admin group
-2.  Gives the admin group sudo rights if they haven't already
+###  dwell:server:bootstrap
+
+1. Creates a user account for :user (default 'deploy') in the admin group
+2. Gives the admin group sudo rights if they haven't already
 3.  Copies authorized SSH keys to the remote host
     
     Authorized keys should be in the file `config/dwell/authorized_keys/:user`
@@ -77,14 +67,13 @@ Bootstrapping - dwell:server:bootstrap
     Deploy keys (public and private) should be in the files:
     `config/dwell/deploy_keys/:user.pub` and `config/dwell/deploy_keys/:user`
 
-5.  Disables SSH logins for the root account
+5. Disables SSH logins for the root account
 
 
-Bootstrapping - dwell:linode:bootstrap
---------------------------------------
+###  dwell:linode:bootstrap
 
-1.  Calls out to server:bootstrap show above
-2.  Uses the DHCP IP assignment to configure a static IP and disable DHCP
+1. Calls out to server:bootstrap show above
+2. Uses the DHCP IP assignment to configure a static IP and disable DHCP
 3.  Sets up the hostname of the box from what was passed in HOSTS
 
     You MUST pass the host (singular) in HOSTS to bootstrap Linode as the bootstrap needs to know the hostname to properly configure the box.
@@ -100,6 +89,6 @@ SSL certificates will be copied and installed if available.  This will happen au
 SSL certificates should be located locally in:
 `config/dwell/ssl/*.crt` and `config/dwell/ssl/*.key`
 
-When your apache VHOST is setup (`cap dwell:apache:site:setup`, also part of `setup_and_deploy_cold`) these same keys will referenced automatically in your apache configs if you have set `:apache_ssl_enabled`.
+When your apache virtual host is setup (`cap dwell:apache:site:setup`, also part of `setup_and_deploy_cold`) these same keys will referenced automatically in your apache configs if you have set `:apache_ssl_enabled`.
 
-Any key with `CA` in it's name will be a Certificate Authority and added to your Apache config as such.
+Any key with `CA` in it's name is assumged to be a Certificate Authority and added to your Apache config as such (`SSLCACertificateFile`).
