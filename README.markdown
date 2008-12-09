@@ -70,7 +70,7 @@ Authorized keys should be placed in the file (:user is the name of your deploy u
 
 ###  dwell:linode:bootstrap
 
-1. Calls out to `dwell:server:bootstrap` show above
+1. Does a `dwell:server:bootstrap` as show above
 2. Uses the DHCP IP assignment to configure a static IP and disable DHCP
 3. Sets up the hostname of the box from what was passed in HOSTS
 
