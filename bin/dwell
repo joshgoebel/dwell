@@ -1,3 +1,13 @@
 #!/usr/bin/env ruby
+require 'rubygems'
+require 'rubigen'
 
-puts "coming soon"
+if %w(-v --version).include? ARGV.first
+  puts "dwell version 0.2.1"
+  exit(0)
+end
+
+require 'rubigen/scripts/generate'
+source=RubiGen::PathSource.new(:dwell, "#{File.dirname(__FILE__)}/../generators")
+RubiGen::Base.append_sources(source)
+RubiGen::Scripts::Generate.new.run(ARGV, :generator => 'dwell')

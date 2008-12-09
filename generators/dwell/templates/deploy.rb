@@ -3,7 +3,10 @@ require 'dwell'
 # Application Details
 set :application, "myapp"
 set :domain,      "myapp.com"
-set :repository,  "svn://myapp.com/trunk"
+
+# If you aren't using Subversion to manage your source code, specify your SCM below:
+# set :scm, :git
+set :repository,  "set your repository location here"
 
 # Server-wide Details 
 set :user, "deploy"
@@ -13,12 +16,8 @@ server "myserver.com", :app, :web, :db, :primary => true
 ## the user to use when creating new databases and such
 # set :mysql_admin, "root"
 
-## hosts to automatically add to ssh known_hosts for your deploy user
-## only github is currently supported
-# set :known_hosts, [:github]
-
 ## other dwell packages to install on this server
-# set :dwell_install, ["imagemagick"]
+# set :dwell_optional_installs, ["imagemagick"]
 
 ## a specific rails version your app depends on, will be
 ## gem installed during dwell:install

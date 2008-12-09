@@ -11,17 +11,20 @@ Install Capistrano2 (if you don't already have it) then build and install this g
 
 ### Typical Usage
 
-1. From within your Rails directory, run: 
-    `capify .`
-2. Click this link for recommended contents of config/deploy.rb:
-    `http://pastie.org/private/lodo1zveqgc2i0rto9idw`
-3. Configure you application name, domain, repository location and server name details in your deploy.rb
-4.  Bootstrap your server (see docs below) with:
-    `cap dwell:server:bootstrap` or `cap dwell:linode:bootstrap` 
-5. Install the Dwell stack and any optional packages:
-    `cap dwell:install`
-6. Setup your rails app and apache vhost then fire everything up: 
-    `cap dwell:rails:setup_and_deploy_cold`
+1. Capify your Rails directory
+2. Initialize dwell inside your Rails directory (you'll want to overwrite deploy.rb)
+3. Edit your deploy.rb: configure you applications name, domain, repository, server details, etc
+4. Bootstrap your server
+5. Install the Dwell stack and any optional packages
+6. Setup your rails app and apache vhost then deploy cold
+
+Or all said and done:
+    
+    $ capify .
+    $ dwell init .
+    $ cap dwell:server:bootstrap
+    $ cap dwell:install
+    $ cap dwell:rails:setup_and_deploy_cold    
 
 
 The Dwell Stack - dwell:install
@@ -105,7 +108,8 @@ SSL certificates (if found) will be copied and installed during `setup_and_deplo
 
 SSL certificates should be saved locally:
 
+    config/dwell/ssl/ca/*.crt
     config/dwell/ssl/*.crt
     config/dwell/ssl/*.key
 
-Any key with `CA` in it's name is assumed to be a Certificate Authority and is added to your Apache config with `SSLCACertificateFile`.
+Any keys inside `ssl/ca` are assumed to be a Certificate Authority and are added to your Apache config with `SSLCACertificateFile`.
