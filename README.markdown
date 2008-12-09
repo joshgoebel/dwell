@@ -9,8 +9,7 @@ Install Capistrano2 (if you don't already have it) then build and install this g
     $ sudo gem install dwell-0.2.gem
     
 
-Usage
------
+### Typical Usage
 
 1. From within your Rails directory, run: 
     `capify .`
