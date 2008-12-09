@@ -76,13 +76,13 @@ Authorized keys should be placed in the file (:user is the name of your deploy u
 
 You MUST pass the host (singular) in HOSTS to bootstrap a Linode as the bootstrap needs to know the hostname to properly configure the box.
 
-    `HOSTS="my.new.box.com" cap dwell:linode:bootstrap`
+    HOSTS="my.new.box.com" cap dwell:linode:bootstrap
 
 
-Railes Notes - dwell:rails
+Rails Notes - dwell:rails
 --------------------------
 
-### setup_and_deploy_cold
+### dwell:rails:setup_and\_deploy\_cold
 
 1. Does a traditional cap:setup
 2. Copies deploy keys (if found) to the remote host (needed for git, etc)
@@ -102,11 +102,13 @@ Optional deploy keys (public and private) should be placed in `deploy_keys`:
 Apache Notes - dwell:apache
 ---------------------------
 
-SSL certificates will be copied and installed if available.  This happens automatically during `setup_and_deploy_cold` but you can do it manually with `cap dwell:apache:copy_certs`.
+SSL certificates (if found) will be copied and installed during `setup_and_deploy_cold`.  You can also do this manually with `cap dwell:apache:copy_certs`.
 
-SSL certificates should be located locally in:
-`config/dwell/ssl/*.crt` and `config/dwell/ssl/*.key`
+These same certs will referenced automatically in your apache configs if you have set `:apache_ssl_enabled` in your deploy.rb.
 
-When your apache virtual host is setup (`cap dwell:apache:site:setup`, also part of `setup_and_deploy_cold`) these same keys will referenced automatically in your apache configs if you have set `:apache_ssl_enabled`.
+SSL certificates should be saved locally:
 
-Any key with `CA` in it's name is assumged to be a Certificate Authority and added to your Apache config as such (`SSLCACertificateFile`).
+    config/dwell/ssl/*.crt
+    config/dwell/ssl/*.key
+
+Any key with `CA` in it's name is assumed to be a Certificate Authority and added to your Apache config as such (`SSLCACertificateFile`).
