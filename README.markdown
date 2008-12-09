@@ -2,23 +2,21 @@ DWELL - Capistrano recipe to setup a production Rails environment on Ubuntu.
 ============================================================================
 
 
-1.  Install Capistrano2 if you don't already have it:
-    `sudo gem install capistrano`
+Install Capistrano2 (if you don't already have it) then build and install this gem:
 
-2.  Build this gem:
-    `gem build dwell.gemspec`
-
-3.  Install gem with:
-    `sudo gem install dwell-0.2.gem`
-
+    sudo gem install capistrano
+    gem build dwell.gemspec
+    sudo gem install dwell-0.2.gem
+    
 
 Usage
 -----
 
-1. From within your Rails directory, run: `$ capify .`
+1. From within your Rails directory, run: 
+    `capify .`
 2. Click this link for recommended contents of config/deploy.rb: `http://pastie.org/private/lodo1zveqgc2i0rto9idw`
 3. Configure you application name, domain, repository location and server name details in your deploy.rb
-4.  Bootstrap your server (which copies over ssh keys, sets up the deploy account, etc) with `cap dwell:server:bootstrap`.  There is also a dwell:linode:bootstrap if you're using Linode.
+4.  Bootstrap your server (see docs below) with `cap dwell:server:bootstrap` or `cap dwell:linode:bootstrap` 
 5. Install the Dwell stack and any optional packages: `cap dwell:install`
 6. Setup your rails app and Apache vhost, etc: `cap dwell:rails:setup_and_deploy_cold`
 
