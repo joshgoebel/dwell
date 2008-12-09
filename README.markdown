@@ -65,7 +65,7 @@ Bootstrapping
 3. Copies authorized SSH keys to the remote host (such as your own public key)
 5. Disables SSH logins for the root account since we'll be using deploy and sudo
 
-Authorized keys should be placed in sub-directories of the authorized_keys directory. For example, if your deployment user is named "deploy" then your setup might look something like this:
+Authorized keys should be placed in sub-directories of the `authorized_keys` directory. For example, if your deployment user is named "deploy" then your setup might look something like this:
 
     config/dwell/authorized_keys/deploy/my_public_key.txt
     config/dwell/authorized_keys/deploy/another_devs_public_key.txt
