@@ -1,4 +1,4 @@
-DWELL - Capistrano recipe to setup a production Rails environment on Ubuntu.
+DWELL - a cap recipe to setup a full Rails stack on Ubuntu
 ============================================================================
 
 
@@ -14,11 +14,15 @@ Usage
 
 1. From within your Rails directory, run: 
     `capify .`
-2. Click this link for recommended contents of config/deploy.rb: `http://pastie.org/private/lodo1zveqgc2i0rto9idw`
+2. Click this link for recommended contents of config/deploy.rb:
+    `http://pastie.org/private/lodo1zveqgc2i0rto9idw`
 3. Configure you application name, domain, repository location and server name details in your deploy.rb
-4.  Bootstrap your server (see docs below) with `cap dwell:server:bootstrap` or `cap dwell:linode:bootstrap` 
-5. Install the Dwell stack and any optional packages: `cap dwell:install`
-6. Setup your rails app and Apache vhost, etc: `cap dwell:rails:setup_and_deploy_cold`
+4.  Bootstrap your server (see docs below) with:
+    `cap dwell:server:bootstrap` or `cap dwell:linode:bootstrap` 
+5. Install the Dwell stack and any optional packages:
+    `cap dwell:install`
+6. Setup your rails app and apache vhost then fire everything up: 
+    `cap dwell:rails:setup_and_deploy_cold`
 
 
 The Dwell Stack - dwell:install
@@ -30,7 +34,7 @@ The Dwell Stack - dwell:install
 4. Installs Subversion and Git
 5. Installs Ruby, RubyGems, Rails and Merb
 6. Installs Passenger module for Apache2
-7. Installs any optional packages listed in `:dwell_install`
+7. Installs any optional packages listed in `:dwell_optional_installs`
 
 
 ### Optional Packages
@@ -56,16 +60,18 @@ Bootstrapping
 
 1. Creates a user account for :user (default 'deploy') in the admin group
 2. Gives the admin group sudo rights if they haven't already
-3.  Copies authorized SSH keys to the remote host
-    
-    Authorized keys should be in the file `config/dwell/authorized_keys/:user`
-    
-4.  Copies deploy keys (if found) to the remote host (needed for git, etc)
+3. Copies authorized SSH keys to the remote host (such as your own public key)
+4. Copies deploy keys (if found) to the remote host (needed for git, etc)
+5. Disables SSH logins for the root account since we'll be using deploy and sudo
 
-    Deploy keys (public and private) should be in the files:
-    `config/dwell/deploy_keys/:user.pub` and `config/dwell/deploy_keys/:user`
+Authorized keys should be in the file:
 
-5. Disables SSH logins for the root account
+    config/dwell/authorized_keys/:user
+
+Deploy keys (public and private) should be in the files:
+
+    config/dwell/deploy_keys/:user.pub
+    config/dwell/deploy_keys/:user
 
 
 ###  dwell:linode:bootstrap
