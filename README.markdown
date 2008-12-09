@@ -36,7 +36,7 @@ The Dwell Stack - dwell:install
 4. Installs Subversion and Git
 5. Installs Ruby, RubyGems, Rails and Merb
 6. Installs Passenger module for Apache2
-7. Installs any optional packages listed in `:dwell_optional_installs`
+7. Installs any specified optional packages
 
 
 ### Optional Packages
@@ -65,9 +65,14 @@ Bootstrapping
 3. Copies authorized SSH keys to the remote host (such as your own public key)
 5. Disables SSH logins for the root account since we'll be using deploy and sudo
 
-Authorized keys should be placed in the file (:user is the name of your deploy user):
+Authorized keys should be placed in sub-directories of the authorized_keys directory. For example, if your deployment user is named "deploy" then your setup might look something like this:
 
-    config/dwell/authorized_keys/:user
+    config/dwell/authorized_keys/deploy/my_public_key.txt
+    config/dwell/authorized_keys/deploy/another_devs_public_key.txt
+    
+You can update keys anytime (add or remove) and push them to your servers.  Pushing will overwrite ALL the remote keys with your new local keys.
+
+    $ cap dwell:server:push_ssh_keys
 
 
 ###  dwell:linode:bootstrap
@@ -106,10 +111,10 @@ Apache Notes - dwell:apache
 
 SSL certificates (if found) will be copied and installed during `setup_and_deploy_cold`.  You can also do this manually with `cap dwell:apache:copy_certs`.  These same certs will referenced automatically in your apache configs if you have set `:apache_ssl_enabled` in your deploy.rb.
 
-SSL certificates should be saved locally:
+SSL certificates should be place in `ssl`:
 
     config/dwell/ssl/ca/*.crt
     config/dwell/ssl/*.crt
     config/dwell/ssl/*.key
 
-Any keys inside `ssl/ca` are assumed to be a Certificate Authority and are added to your Apache config with `SSLCACertificateFile`.
+Any keys inside `ssl/ca` are assumed to be a Certificate Authority and are added to your Apache config using `SSLCACertificateFile`.
