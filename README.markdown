@@ -61,34 +61,48 @@ Bootstrapping
 1. Creates a user account for :user (default 'deploy') in the admin group
 2. Gives the admin group sudo rights if they haven't already
 3. Copies authorized SSH keys to the remote host (such as your own public key)
-4. Copies deploy keys (if found) to the remote host (needed for git, etc)
 5. Disables SSH logins for the root account since we'll be using deploy and sudo
 
-Authorized keys should be in the file:
+Authorized keys should be placed in the file (:user is the name of your deploy user):
 
     config/dwell/authorized_keys/:user
-
-Deploy keys (public and private) should be in the files:
-
-    config/dwell/deploy_keys/:user.pub
-    config/dwell/deploy_keys/:user
 
 
 ###  dwell:linode:bootstrap
 
 1. Calls out to server:bootstrap show above
 2. Uses the DHCP IP assignment to configure a static IP and disable DHCP
-3.  Sets up the hostname of the box from what was passed in HOSTS
+3. Sets up the hostname of the box from what was passed in HOSTS
 
-    You MUST pass the host (singular) in HOSTS to bootstrap Linode as the bootstrap needs to know the hostname to properly configure the box.
+You MUST pass the host (singular) in HOSTS to bootstrap a Linode as the bootstrap needs to know the hostname to properly configure the box.
 
     `HOSTS="my.new.box.com" cap dwell:linode:bootstrap`
+
+
+Railes Notes - dwell:rails
+--------------------------
+
+### setup_and_deploy_cold
+
+1. Does a traditional cap:setup
+2. Copies deploy keys (if found) to the remote host (needed for git, etc)
+3. Creates a mysql database with the authentication info in your database.yml
+4. Sets up an apache vhost and SSL keys (if you're using SSL)
+5. Deploys your code
+6. Installs any necessary app gems (`rake gems:install`)
+7. Runs migrations
+8. Reloads Apache which should fire up your app
+
+Optional deploy keys (public and private) should be placed in `deploy_keys`:
+
+    config/dwell/deploy_keys/:user.pub
+    config/dwell/deploy_keys/:user
 
 
 Apache Notes - dwell:apache
 ---------------------------
 
-SSL certificates will be copied and installed if available.  This will happen automatically during a `setup_and_deploy_cold` or you can do it manually with `cap dwell:apache:copy_certs`.
+SSL certificates will be copied and installed if available.  This happens automatically during `setup_and_deploy_cold` but you can do it manually with `cap dwell:apache:copy_certs`.
 
 SSL certificates should be located locally in:
 `config/dwell/ssl/*.crt` and `config/dwell/ssl/*.key`
