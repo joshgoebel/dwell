@@ -11,7 +11,7 @@ Capistrano::Configuration.instance(:must_exist).load do
   
   namespace :dwell do
     
-    set :dwell_install, []
+    set :dwell_optional_installs, []
     
     desc "Install Rails Production Environment"
     task :install do
@@ -24,7 +24,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       top.dwell.ruby_enterprise.install if which_ruby==:enterprise
       top.dwell.gems.install
       top.dwell.passenger.install
-      dwell_install.each do |package_name|
+      dwell_optional_installs.each do |package_name|
         top.dwell.send(package_name).install
       end
     end

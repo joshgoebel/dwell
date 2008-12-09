@@ -16,20 +16,20 @@ Capistrano::Configuration.instance(:must_exist).load do
       set :apache_ssl_forward_all, false
 
       desc "Install Apache"  
-      task :install do
+      task :install, :roles => :web do
         sudo "apt-get install apache2 apache2-threaded-dev -y"
         dwell1.record_install "apache2"
       end
 
       # shorter form
-      task :setup do
+      task :setup, :roles => :web do
         site.setup
       end
     
       namespace :site do
     
         desc "Configure site for apache"
-        task :setup do
+        task :setup, :roles => :web do
           set :apache_server_name, domain unless apache_server_name
           server_aliases = []
           server_aliases << "www.#{apache_server_name}" unless apache_server_name =~ /^www\./
@@ -58,13 +58,13 @@ Capistrano::Configuration.instance(:must_exist).load do
         end
       
         desc "Disable this site"
-        task :disable do
+        task :disable, :roles => :web do
           sudo "a2dissite #{application}"
         end
         
       end
       
-      task :copy_certs do
+      task :copy_certs, :roles => :web do
         Dir.glob("config/dwell/ssl/*").each do |file|
           basename=File.basename(file)
           dwell1.sudo_upload file, "/etc/ssl/certs/#{basename}" if file=~/.crt/
