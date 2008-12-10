@@ -29,6 +29,7 @@ Capistrano::Configuration.instance(:must_exist).load do
           put File.read("config/dwell/deploy_keys/#{user}.pub"), "/home/#{user}/.ssh/id_rsa.pub", :mode => 0600
           sudo "chown #{user}.admin /home/#{user}/.ssh/id_rsa.pub"
         end
+        run "touch /home/#{user}/.ssh/known_hosts"
         Dir.glob("config/dwell/known_hosts/*").each do |file|
           key=File.open(file).read
           dwell1.append_to_file_if_missing("/home/#{user}/.ssh/known_hosts", key)
