@@ -13,6 +13,14 @@ Capistrano::Configuration.instance(:must_exist).load do
     
     set :dwell_optional_installs, []
     
+    namespace :optional do
+      task :install do
+        dwell_optional_installs.each do |package_name|
+          top.dwell.send(package_name).install
+        end
+      end
+    end
+    
     desc "Install Rails Production Environment"
     task :install do
       top.dwell.ubuntu.prepare
@@ -24,9 +32,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       top.dwell.ruby_enterprise.install if which_ruby==:enterprise
       top.dwell.gems.install
       top.dwell.passenger.install
-      dwell_optional_installs.each do |package_name|
-        top.dwell.send(package_name).install
-      end
+      top.dwell.optional.install
     end
   
   end

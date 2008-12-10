@@ -2,6 +2,8 @@ Capistrano::Configuration.instance(:must_exist).load do
   namespace :dwell do
     namespace :mysql do
 
+      set :mysql_admin, "root"
+
       # database operations
       # TODO: should this be dwell:app:db namespace or something?
       namespace :db do
@@ -12,7 +14,7 @@ Capistrano::Configuration.instance(:must_exist).load do
           set_mysql_admin
           read_config
 
-          sql = "CREATE DATABASE #{db_name};"
+          sql = "CREATE DATABASE IF NOT EXISTS #{db_name};"
           sql += "GRANT ALL PRIVILEGES ON #{db_name}.* TO #{db_user}@localhost IDENTIFIED BY '#{db_password}';"  
           mysql_helper.execute sql, mysql_admin
         end
