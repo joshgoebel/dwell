@@ -41,8 +41,8 @@ Capistrano::Configuration.instance(:must_exist).load do
         task :archive, :roles => :app, :only => { :primary => true } do
           to_backup=[]
           app_symlinks.map do |key, value|
-            dir=(key==:root) ? value : key
-            to_backup << "shared/" + dir
+            prefix=(key==:root) ? '' : key.to_s + "/"
+            value.each { |d| to_backup << "shared/#{prefix}#{d}" unless d=="tmp" }
           end
           run "cd #{deploy_to} && tar -czf shared.tar.gz #{to_backup.join " "}"
         end
