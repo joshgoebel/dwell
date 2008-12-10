@@ -9,7 +9,7 @@ Capistrano::Configuration.instance(:must_exist).load do
       task :bootstrap do
         hostname=ENV["HOSTS"]
         if hostname =~ /\d+\.\d+\.\d+\.\d+/
-          puts "You used an IP, please use the hostname so can set /etc/hostname on the remote."
+          puts "You used an IP, please use the hostname so we can set /etc/hostname on the remote."
           exit
         end
         if hostname.nil? or hostname.empty?

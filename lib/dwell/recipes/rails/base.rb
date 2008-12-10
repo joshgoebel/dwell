@@ -47,6 +47,13 @@ Capistrano::Configuration.instance(:must_exist).load do
           run "cd #{deploy_to} && tar -czf shared.tar.gz #{to_backup.join " "}"
         end
 
+        desc "extract shared on the remote host"
+        task :extract, :roles => :app, :only => { :primary => true } do
+          if Capistrano::CLI.ui.agree("Confirm extract of shared.tar.gz on remote host? (y/n)")
+            run "cd #{deploy_to} && tar -xzf shared.tar.gz"
+          end
+        end
+
         desc "fetch shared files locally"
         task :fetch, :roles => :app, :only => { :primary => true } do
           get "#{deploy_to}/shared.tar.gz", "shared.tar.gz"
