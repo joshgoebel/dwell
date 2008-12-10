@@ -26,7 +26,7 @@ Capistrano::Configuration.instance(:must_exist).load do
         desc "dump database" 
         task :dump, :roles => :db, :only => { :primary => true } do
           read_config
-          run "cd #{deploy_to} && mysqldump --add-drop-table #{db_name } -u#{db_user} -p#{db_password} > dump_#{short_date}.sql"
+          dwell1.run_with_input "cd #{deploy_to} && mysqldump --add-drop-table #{db_name } -u#{db_user} -p > dump_#{short_date}.sql", /password/i, db_password
         end
 
         desc "fetch dumped database"

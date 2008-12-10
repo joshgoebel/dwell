@@ -99,14 +99,18 @@ module Dwell1
 
   def handle_command_with_input(local_run_method, shell_command, input_query, response=nil)
     send(local_run_method, shell_command, {:pty => true}) do |channel, stream, data|
-      logger.info data, channel[:host]
+      
       if data =~ input_query
         if response
+          logger.info "#{data} #{"*"*(rand(10)+5)}", channel[:host]
           channel.send_data "#{response}\n"
-        else 
+        else
+          logger.info data, channel[:host]
           response = ::Capistrano::CLI.password_prompt "#{data}"
           channel.send_data "#{response}\n"
         end
+      else
+        logger.info data, channel[:host]
       end
     end
   end
