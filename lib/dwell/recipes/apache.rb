@@ -65,7 +65,8 @@ Capistrano::Configuration.instance(:must_exist).load do
       end
       
       task :copy_certs, :roles => :web do
-        Dir.glob("config/dwell/ssl/*").each do |file|
+        Dir.glob("config/dwell/ssl/**/*").each do |file|
+          next if File.directory?(file)
           basename=File.basename(file)
           dwell1.sudo_upload file, "/etc/ssl/certs/#{basename}" if file=~/.crt/
           if file=~/.key/      

@@ -1,7 +1,7 @@
 Capistrano::Configuration.instance(:must_exist).load do 
 
   namespace :dwell do
-    namespace :campfire do
+    namespace :campfirenow do
       set :campfire, nil
       # set :campfire, {
       #   :account => "campfireurl",
