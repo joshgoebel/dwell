@@ -9,10 +9,15 @@ Capistrano::Configuration.instance(:must_exist).load do
       
       desc "fully setup the application and cold deploy it"
       task :setup_and_deploy_cold do
+        setup
+        top.deploy.cold
+      end
+      
+      desc "setup our cap deployment, db, and web config"
+      task :setup do
         top.deploy.setup
         top.app.db.setup
         top.app.web.setup
-        top.deploy.cold
       end
       
       desc "install the gems specified with config.gem"

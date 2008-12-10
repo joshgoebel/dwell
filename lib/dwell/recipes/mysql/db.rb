@@ -46,7 +46,9 @@ Capistrano::Configuration.instance(:must_exist).load do
         desc "import the database into the remote"
         task :import, :roles => :db, :only => { :primary => true } do
           read_config
-          dwell1.run_with_input "mysql #{db_name} -u#{db_user} -p < #{deploy_to}/dump_#{short_date}.sql", /password/i, db_password
+          if Capistrano::CLI.ui.agree("Confirm import of dump_#{short_date}.sql on remote host? (y/n)")
+            dwell1.run_with_input "mysql #{db_name} -u#{db_user} -p < #{deploy_to}/dump_#{short_date}.sql", /password/i, db_password
+          end
         end
 
         task :dump_and_fetch, :roles => :db, :only => { :primary => true } do
